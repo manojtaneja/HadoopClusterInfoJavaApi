@@ -1,0 +1,50 @@
+HadoopClusterInfoJavaApi
+This java api's will help you getting any type of cluster information i.e either the cloudera managed cluster or Ambari managed Hortonworks or Big insights or normal Hadoop cluster or a Mapr one.
+
+Version 1 of this util jar will bring in the information from Ambari based cluster for hortonworks or big insights but surely the wrok for cloudera manager and Map r is in progress and will be updated in subsequent versions.
+
+SAMPLE CODE :
+
+//Load the jar in your eclipse workspace or in your classpath setting for runtime availability
+
+public class AmbariHandler {
+
+public static void main(String args[]) {
+//Get Rootconnection object from the ambari rest implementaion code in the jar
+    RootConnection Impl = new AmbariRestImpl();
+    //Once the root connection object is created , get the final ambari connection object by providing the following parameters.(Ambari host name,Ambari port,Aabari user id ,Ambari pasword)
+    Impl.getConnectionObject("ambarihostname", 8080, "admin", "admin");
+    //Get the clustername first from the ambari connection object
+    String clustername = Impl.getClusterName();
+    //Find the tag name for any of the configuration site xml or other config files in the cluster , say , hive-site.xml , core-site.xml,hbase-site.xml,tej-site.xml,zoo.cfg,hdfs-site.xml,mapred-site.xml or so on 
+   //In this example I'm passing hive-site to get hive-site.xml tag
+    String tag = Impl.getdesiredConfigTAG(clustername, "hive-site");
+    //hive.zookeeper.client.port value from the cluster will be printed as an output
+    System.out.println("Value is"
+            + Impl.getactualConfigurationkeyvalue(clustername, "hive-site",
+                    tag, "hive.zookeeper.client.port"));
+    System.out.println("Properties list  is"
+            + Impl.getactualConfigurationproperties(clustername,
+                    "hive-site", tag));
+}
+
+}
+
+public class ClouderaHandler {
+
+
+
+public static void main(String args[]) {
+    RootConnection Impl = new ClouderRestImpl();
+    Impl.getConnectionObject("irl63ppd10", 8080, "admin", "admin");
+    String clustername = Impl.getClusterName();
+    String tag = Impl.getdesiredConfigTAG(clustername, "hive-site");
+    System.out.println("Value is"
+            + Impl.getactualConfigurationkeyvalue(clustername, "hive-site",
+                    tag, "hive.zookeeper.client.port"));
+    System.out.println("Properties list  is"
+            + Impl.getactualConfigurationproperties(clustername,
+                    "hive-site", tag));
+}
+
+}
